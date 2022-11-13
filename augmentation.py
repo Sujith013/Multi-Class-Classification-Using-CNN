@@ -1,10 +1,5 @@
 import keras
-from mpi4py import MPI
 import os
-
-comm = MPI.COMM_WORLD
-NODES = comm.Get_size()
-RANK = comm.Get_rank()
 
 data_dir = 'data' 
 os.listdir(data_dir)
@@ -19,7 +14,6 @@ datagen = ImageDataGenerator(
         brightness_range = (0.5, 1.5))
 
 for j in range(len(os.listdir(data_dir))): 
-    if RANK==j:
 
         image_class = os.listdir(data_dir)[j]
 
@@ -28,7 +22,7 @@ for j in range(len(os.listdir(data_dir))):
         dir = "data/"+image_class
         aug = "augmented/"+image_class
 
-        for batch in datagen.flow_from_directory(directory=dir, batch_size = 4,
+        for batch in datagen.flow_from_directory(directory=dir, batch_size = 2,
                           save_to_dir =aug, 
                           save_prefix ='aug', save_format ='jpg'):
                 i += 1
